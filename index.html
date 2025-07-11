@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>novnet</title>
+  <link rel="icon" type="image/x-icon" href="https://rockylinux.org/favicon.ico"> <!-- Rocky Linux favicon -->
+  <!-- Font Awesome CDN vir ikone -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1a1a1a; /* Swart agtergrond */
+      color: #e0e0e0; /* Ligte teks vir kontras */
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background-color: #000000; /* Swart banner */
+      display: flex;
+      padding: 0 10px;
+      position: relative;
+      z-index: 1000;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .navbar img {
+      height: 40px;
+      margin-right: 20px;
+    }
+
+    .date-display {
+      color: #10A170; /* Rocky Linux groen */
+      font-size: 14px;
+      margin-left: auto; /* Stoot dit na die regterkant */
+      padding: 14px 16px;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropbtn {
+      font-size: 16px;
+      border: none;
+      outline: none;
+      color: #10A170; /* Rocky Linux groen */
+      padding: 14px 16px;
+      background-color: inherit;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .dropbtn i {
+      color: #ffffff; /* Wit ikone */
+      margin-right: 8px; /* Spasie tussen ikoon en teks */
+      font-size: 18px;
+      transition: color 0.3s ease;
+    }
+
+    .dropbtn:hover i {
+      color: #000000; /* Swart ikone by hover, soos News24 */
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #2a2a2a; /* Donker grys vir dropdown */
+      min-width: 220px;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+      z-index: 1001;
+    }
+
+    .dropdown-content a {
+      color: #e0e0e0; /* Ligte teks */
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #10A170; /* Groen aksent by hover */
+      color: #000000; /* Swart teks vir kontras */
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .navbar .dropdown + .dropdown {
+      margin-left: 10px;
+    }
+
+    .radio-player {
+      text-align: center;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #2a2a2a; /* Donker grys kaart */
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      max-width: 500px;
+    }
+
+    .radio-player p {
+      margin: 10px 0;
+      font-weight: bold;
+      color: #10A170; /* Groen aksent */
+    }
+
+    .radio-player audio {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .weather-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 20px auto;
+      max-width: 1000px;
+      flex-wrap: wrap;
+    }
+
+    .weather-card {
+      background-color: #2a2a2a; /* Donker grys kaart */
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      padding: 20px;
+      width: 250px;
+      text-align: center;
+    }
+
+    .weather-card h3 {
+      margin: 0 0 10px;
+      color: #10A170; /* Groen aksent */
+    }
+
+    .weather-card p {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #e0e0e0;
+    }
+
+    .weather-icon {
+      width: 50px;
+      height: 50px;
+    }
+
+    .forecast {
+      margin-top: 15px;
+    }
+
+    .forecast p {
+      font-size: 12px;
+      color: #b0b0b0; /* Ligter grys vir sekondêre teks */
+    }
+
+    .services-container {
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #2a2a2a; /* Donker grys kaart */
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .services-container h3 {
+      text-align: center;
+      color: #10A170; /* Groen aksent */
+      margin-bottom: 20px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .service-card {
+      background-color: #333333; /* Effens ligter grys vir kaarte */
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .service-card a {
+      color: #10A170; /* Groen aksent */
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .service-card a:hover {
+      text-decoration: underline;
+      color: #e0e0e0; /* Ligte teks by hover */
+    }
+
+    .status-indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-left: 10px;
+    }
+
+    .status-online {
+      background-color: #28a745; /* Hou groen vir aanlyn status */
+    }
+
+    .status-offline {
+      background-color: #dc3545; /* Hou rooi vir aflyn status */
+    }
+
+    .tailscale-container {
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #2a2a2a; /* Donker grys kaart */
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .tailscale-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .tailscale-card {
+      background-color: #333333; /* Effens ligter grys vir kaarte */
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      color: #e0e0e0;
+    }
+
+    /* Mobiele Optimalisering */
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .navbar img {
+        margin-bottom: 10px;
+      }
+
+      .date-display {
+        margin-left: 0;
+        padding: 10px;
+      }
+
+      .navbar .dropdown {
+        width: 100%;
+        margin-left: 0;
+      }
+
+      .dropbtn {
+        width: 100%;
+        text-align: left;
+        justify-content: flex-start;
+      }
+
+      .dropdown-content {
+        position: static;
+        width: 100%;
+        box-shadow: none;
+      }
+
+      .services-grid, .tailscale-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .weather-container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .weather-card {
+        width: 100%;
+        max-width: 250px;
+      }
+
+      .radio-player {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .weather-card {
+        font-size: 14px;
+      }
+
+      .date-display {
+        font-size: 12px;
+      }
+
+      .dropbtn i {
+        font-size: 16px; /* Kleiner ikone op kleiner skerms */
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <img src="logo.png" alt="Site Logo"> <!-- Vervang met jou eie logo -->
+    <div class="dropdown">
+      <button class="dropbtn"><i class="fas fa-cog"></i> IT Admin</button>
+      <div class="dropdown-content">
+        <a href="https://example.com/cockpit" target="_blank">Cockpit</a>
+        <a href="https://example.com/jellyfin" target="_blank">JellyFin</a>
+        <a href="https://example.com/speedtest" target="_blank">SpeedTest</a>
+        <a href="https://example.com/nessus" target="_blank">Nessus-Essentials</a>
+        <a href="https://example.com/wazuh" target="_blank">Wazuh</a>
+        <a href="https://example.com/portainer" target="_blank">Portainer</a>
+        <a href="https://example.com/metube" target="_blank">MeTube</a>
+        <a href="https://example.com/sterlingpdf" target="_blank">SterlingPDF</a>
+        <a href="https://example.com/glances" target="_blank">Glances</a>
+        <a href="https://example.com/gitea" target="_blank">Gitea</a>
+        <a href="https://rustdesk.com/web/" target="_blank">RustDesk Web</a>
+        <a href="https://www.virustotal.com/gui/home/upload" target="_blank">VirusTotal</a>
+      </div>
+    </div>  
+    <div class="dropdown">
+      <button class="dropbtn"><i class="fas fa-volume-up"></i> Radio</button>
+      <div class="dropdown-content" id="radio-stations">
+        <a href="#" data-url="https://edge.iono.fm/xice/54_high.aac">Algoa FM ZA</a>
+        <a href="#" data-url="https://bokradio.highquality.radiostream.co.za/">Bok Radio ZA</a>
+        <a href="#" data-url="https://edge.iono.fm/xice/330_high.aac">Groot FM ZA</a>
+        <a href="#" data-url="https://playerservices.streamtheworld.com/api/livestream-redirect/KFM.mp3">KFM ZA</a>
+        <a href="#" data-url="https://live.jacarandafm.com/jacarandahigh.mp3">Jacaranda ZA</a>
+        <a href="#" data-url="http://stream.live.vc.bbcmedia.co.uk/bbc_world_service">BBC World UK</a>
+        <a href="#" data-url="http://media-ice.musicradio.com/CapitalMP3">Capital FM London UK</a>
+        <a href="#" data-url="https://ice-sov.musicradio.com/HeartLondonMP3">Heart London UK</a>
+        <a href="#" data-url="https://video.news.sky.com/snr/news/snrnews.mp3">SkyNews Radio UK</a>
+        <a href="#" data-url="https://playerservices.streamtheworld.com/api/livestream-redirect/WABCAM.mp3">WABC US</a>
+        <a href="#" data-url="https://live.leanstream.co/CFOXFM-MP3">CFox CA</a>
+        <a href="#" data-url="https://rogers-hls.leanstream.co/rogers/van650.stream/icy">SportsTalk 360 CA</a>
+        <a href="#" data-url="https://corus.leanstream.co/CKNGFM-MP3">CKNG Edmonton CA</a>
+        <a href="#" data-url="https://live.leanstream.co/CKNWAM">CKNW CA</a>
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="dropbtn"><i class="fas fa-share-alt"></i> Socials</button>
+      <div class="dropdown-content">
+        <a href="https://wigle.net/stats" target="_blank">WigleNet</a>
+         <a href="https://home.openweathermap.org/users/sign_in" target="_blank">OpenWeather</a>
+        <a href="https://www.facebook.com" target="_blank">Facebook</a>
+        <a href="https://www.instagram.com" target="_blank">Instagram</a>
+        <a href="https://www.reddit.com" target="_blank">Reddit</a>
+        <a href="https://x.com" target="_blank">X</a>
+        <a href="https://web.whatsapp.com/" target="_blank">WhatsApp</a>
+        <a href="https://github.com" target="_blank">Github</a>
+        <a href="https://open.spotify.com" target="_blank">Spotify</a>
+        <a href="https://discord.com" target="_blank">Discord</a>
+        <a href="https://annas-archive.org/" target="_blank">Anna's Archive</a>
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="dropbtn"><i class="fas fa-coins"></i> Silver</button>
+      <div class="dropdown-content">
+        <a href="https://www.kitco.com/charts/silver" target="_blank">Kitco</a>
+        <a href="https://www.grcmint.co.za/" target="_blank">GoldReefCity Mint</a>
+        <a href="https://africanbullion.co.za/shop/" target="_blank">African Bullion</a>
+        <a href="https://www.silver-sphere.co.za/product-category/silver-bullion-coins/" target="_blank">Silver-Sphere</a>
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="dropbtn"><i class="fas fa-robot"></i> AI</button>
+      <div class="dropdown-content">
+        <a href="https://chatgpt.com" target="_blank">ChatGPT</a>
+        <a href="https://grok.com" target="_blank">Grok</a>
+        <a href="https://gemini.google.com" target="_blank">Gemini</a>
+        <a href="https://www.perplexity.ai/" target="_blank">Perplexity</a>
+        <a href="https://www.bing.com/search?q=bing+chat" target="_blank">Bing Chat</a>
+        <a href="https://www.heygen.com/" target="_blank">HeyGen</a>
+        <a href="https://www.runwayml.com/" target="_blank">RunwayML</a>
+        <a href="https://www.midjourney.com/home/" target="_blank">MidJourney</a>
+        <a href="https://www.stability.ai/" target="_blank">Stability AI</a>
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="dropbtn"><i class="fas fa-book"></i> Academy</button>
+      <div class="dropdown-content">
+        <a href="https://www.udemy.com" target="_blank">Udemy</a>
+        <a href="https://account.hackthebox.com" target="_blank">Hack The Box</a>
+        <a href="https://tryhackme.com/login" target="_blank">TryHackMe</a>
+        <a href="https://www.netacad.com/dashboard" target="_blank">Cisco Netcad</a> 
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="dropbtn"><i class="fas fa-film"></i> Videos</button>
+      <div class="dropdown-content">
+        <a href="https://www.youtube.com" target="_blank">Youtube</a>
+        <a href="https://theflixertv.to/home" target="_blank">Flixer</a>
+        <a href="https://flixtor.to/" target="_blank">Flixtor</a>
+        <a href="https://vipleague.im/" target="_blank">VIP League Sports</a>
+        <a href="https://rugbystreams.me/" target="_blank">Rugby Streams</a>
+        <a href="https://www.crunchyroll.com/" target="_blank">Cruncyroll</a>
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="dropbtn"><i class="fas fa-shopping-cart"></i> Shops</button>
+      <div class="dropdown-content">
+        <a href="https://gogadgets.co.za/" target="_blank">GoGadgets</a>
+        <a href="https://shop.asetos.co.za/" target="_blank">Asetos</a>
+        <a href="https://radicalrefurbs.co.za/" target="_blank">Radical Refurbs</a>
+        <a href="https://www.wootware.co.za/" target="_blank">Wootware</a>
+        <a href="https://www.evetech.co.za/" target="_blank">Evetech</a>
+        <a href="https://www.bobshop.co.za/" target="_blank">Bobshop</a>
+        <a href="https://www.takealot.com/" target="_blank">TakeAlot</a>
+        <a href="https://computermania.co.za/" target="_blank">Computer Mania</a>
+        <a href="https://mineaway.co.za/" target="_blank">MineAway</a>
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="dropbtn"><i class="fas fa-newspaper"></i> TechNews</button>
+      <div class="dropdown-content">
+        <a href="https://www.virtualizationhowto.com/" target="_blank">virtualizationhowto</a>
+        <a href="https://ostechnix.com/" target="_blank">ostech</a>
+        <a href="https://www.techradar.com/" target="_blank">TechRadar</a>
+        <a href="https://www.linuxtechi.com/" target="_blank">linuxtechi</a>
+        <a href="https://www.howtoforge.com/" target="_blank">howtoforge</a>
+        <a href="https://www.server-world.info/en/" target="_blank">server-world</a>
+        <a href="https://itsfoss.com/" target="_blank">itsfoss</a>
+      </div>
+    </div>
+    <div class="date-display" id="date-display"></div>
+  </div>
+
+  <div class="radio-player">
+    <p id="current-station">Geen stasie geselekteer</p>
+    <audio id="radio" controls></audio>
+  </div>
+
+  <div class="weather-container">
+    <div class="weather-card" id="kimberley-weather">
+      <h3>Kimberley, Noord-Kaap</h3>
+      <p id="kimberley-current">Laai weer...</p>
+      <img id="kimberley-icon" class="weather-icon" src="" alt="">
+      <div class="forecast" id="kimberley-forecast"></div>
+    </div>
+    <div class="weather-card" id="george-weather">
+      <h3>George, Wes-Kaap</h3>
+      <p id="george-current">Laai weer...</p>
+      <img id="george-icon" class="weather-icon" src="" alt="">
+      <div class="forecast" id="george-forecast"></div>
+    </div>
+    <div class="weather-card" id="auckland-weather">
+      <h3>Auckland, NZ</h3>
+      <p id="auckland-current">Laai weer...</p>
+      <img id="auckland-icon" class="weather-icon" src="" alt="">
+      <div class="forecast" id="auckland-forecast"></div>
+    </div>
+  </div>
+
+  <div class="services-container">
+    <h3>IT Admin Dienste</h3>
+    <div class="services-grid" id="services-grid"></div>
+  </div>
+
+  <div class="tailscale-container">
+    <h3>Netwerk Status</h3>
+    <div class="tailscale-grid" id="tailscale-grid"></div>
+  </div>
+
+  <script>
+    // Datum vertoon funksionaliteit
+    function updateDateDisplay() {
+      const today = new Date();
+      const tomorrow = new Date(today);
+      tomorrow.setDate(today.getDate() + 1);
+
+      const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+      const todayString = today.toLocaleDateString('af-ZA', options);
+      const tomorrowString = tomorrow.toLocaleDateString('af-ZA', options);
+
+      const dateDisplay = document.getElementById('date-display');
+      dateDisplay.textContent = `Vandag: ${todayString} | Môre: ${tomorrowString}`;
+    }
+
+    // Radio funksionaliteit
+    const radio = document.getElementById('radio');
+    const currentStation = document.getElementById('current-station');
+    const stationLinks = document.querySelectorAll('#radio-stations a');
+
+    stationLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const url = link.getAttribute('data-url');
+        const stationName = link.textContent;
+
+        radio.src = url;
+        radio.play().catch(error => {
+          console.error('Fout by speel:', error);
+          currentStation.textContent = `Fout: Kan nie ${stationName} speel nie (moontlik CORS of ongeldige URL)`;
+        });
+
+        currentStation.textContent = `Nou speel: ${stationName}`;
+      });
+    });
+
+    window.addEventListener('unload', () => {
+      radio.pause();
+      radio.src = '';
+    });
+
+    // Weer funksionaliteit
+    const apiKey = 'YOUR_API_KEY'; // Vervang met jou eie OpenWeatherMap API-sleutel
+    const kimberleyCoords = { lat: -28.7323, lon: 24.7623 };
+    const georgeCoords = { lat: -33.9630, lon: 22.4617 };
+    const aucklandCoords = { lat: -36.8485, lon: 174.7633 };
+
+    async function fetchWeather(city, coords, currentElement, iconElement, forecastElement) {
+      try {
+        const currentUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${coords.lat}&lon=${coords.lon}&appid=${apiKey}&units=metric`;
+        const currentResponse = await fetch(currentUrl);
+        if (!currentResponse.ok) {
+          throw new Error(`HTTP fout: ${currentResponse.status} - ${currentResponse.statusText}`);
+        }
+        const currentData = await currentResponse.json();
+
+        const temp = currentData.main.temp;
+        const description = currentData.weather[0].description;
+        const icon = `http://openweathermap.org/img/wn/${currentData.weather[0].icon}.png`;
+        currentElement.textContent = `${temp}°C, ${description}`;
+        iconElement.src = icon;
+        iconElement.alt = description;
+
+        const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${coords.lat}&lon=${coords.lon}&appid=${apiKey}&units=metric`;
+        const forecastResponse = await fetch(forecastUrl);
+        if (!forecastResponse.ok) {
+          throw new Error(`HTTP fout: ${forecastResponse.status} - ${forecastResponse.statusText}`);
+        }
+        const forecastData = await forecastResponse.json();
+
+        const today = new Date().getDate();
+        const dailyForecasts = forecastData.list.filter(item => {
+          const itemDate = new Date(item.dt * 1000).getDate();
+          return itemDate === today + 1 || itemDate === today + 2;
+        }).slice(0, 4);
+
+        forecastElement.innerHTML = '<h4>Voorspelling</h4>';
+        dailyForecasts.forEach(item => {
+          const time = new Date(item.dt * 1000).toLocaleString('af-ZA', { weekday: 'short', hour: '2-digit', minute: '2-digit' });
+          const temp = item.main.temp;
+          const desc = item.weather[0].description;
+          forecastElement.innerHTML += `<p>${time}: ${temp}°C, ${desc}</p>`;
+        });
+      } catch (error) {
+        console.error(`Fout by ${city} weer ophaal:`, error);
+        currentElement.textContent = `Kon nie weer laai nie - ${error.message}`;
+        forecastElement.innerHTML = '';
+      }
+    }
+
+    function updateWeather() {
+      fetchWeather('Kimberley', kimberleyCoords, document.getElementById('kimberley-current'), document.getElementById('kimberley-icon'), document.getElementById('kimberley-forecast'));
+      fetchWeather('George', georgeCoords, document.getElementById('george-current'), document.getElementById('george-icon'), document.getElementById('george-forecast'));
+      fetchWeather('Auckland', aucklandCoords, document.getElementById('auckland-current'), document.getElementById('auckland-icon'), document.getElementById('auckland-forecast'));
+    }
+
+    // IT Admin Dienste
+    const services = [
+      { name: 'Cockpit', url: 'https://example.com/cockpit' },
+      { name: 'JellyFin', url: 'https://example.com/jellyfin' },
+      { name: 'SpeedTest', url: 'https://example.com/speedtest' },
+      { name: 'Nessus-Essentials', url: 'https://example.com/nessus' },
+      { name: 'Wazuh', url: 'https://example.com/wazuh' },
+      { name: 'Portainer', url: 'https://example.com/portainer' },
+      { name: 'MeTube', url: 'https://example.com/metube' },
+      { name: 'SterlingPDF', url: 'https://example.com/sterlingpdf' },
+      { name: 'Glances', url: 'https://example.com/glances' },
+      { name: 'Gitea', url: 'https://example.com/gitea' },
+      { name: 'RustDesk Web', url: 'https://rustdesk.com/web/' }
+    ];
+
+    let previousServiceStatuses = {};
+
+    async function checkServiceStatus(url) {
+      try {
+        const response = await fetch(url, { method: 'HEAD', mode: 'no-cors' });
+        return true;
+      } catch (error) {
+        console.error(`Fout by statuskontrole vir ${url}:`, error);
+        return false;
+      }
+    }
+
+    async function updateServices() {
+      const grid = document.getElementById('services-grid');
+      grid.innerHTML = '';
+
+      for (const service of services) {
+        const status = await checkServiceStatus(service.url);
+        const card = document.createElement('div');
+        card.className = 'service-card';
+        card.innerHTML = `
+          <a href="${service.url}" target="_blank">${service.name}</a>
+          <span class="status-indicator ${status ? 'status-online' : 'status-offline'}"></span>
+        `;
+        grid.appendChild(card);
+
+        if (previousServiceStatuses[service.name] === true && !status) {
+          if (Notification.permission === 'granted') {
+            new Notification(`Diens Aflyn: ${service.name}`, {
+              body: `${service.name} is nou aflyn. Kontroleer asseblief.`,
+            });
+          } else if (Notification.permission !== 'denied') {
+            Notification.requestPermission().then(permission => {
+              if (permission === 'granted') {
+                new Notification(`Diens Aflyn: ${service.name}`, {
+                  body: `${service.name} is nou aflyn. Kontroleer asseblief.`,
+                });
+              }
+            });
+          }
+        }
+        previousServiceStatuses[service.name] = status;
+      }
+    }
+
+    // Netwerk Status (Vervang Tailscale met generiese toestelle)
+    const networkDevices = [
+      { name: 'Server 1', status: true },
+      { name: 'Tablet 1', status: true },
+      { name: 'Phone 1', status: false },
+      { name: 'Laptop 1', status: true }
+    ];
+
+    function updateNetworkStatus() {
+      const grid = document.getElementById('tailscale-grid');
+      grid.innerHTML = '';
+
+      networkDevices.forEach(device => {
+        const card = document.createElement('div');
+        card.className = 'tailscale-card';
+        card.innerHTML = `
+          <span>${device.name}</span>
+          <span class="status-indicator ${device.status ? 'status-online' : 'status-offline'}"></span>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // Laai alles
+    updateDateDisplay();
+    updateWeather();
+    updateServices();
+    updateNetworkStatus();
+    setInterval(updateWeather, 1800000);
+    setInterval(updateServices, 300000);
+    setInterval(updateNetworkStatus, 300000);
+  </script>
+</body>
+</html>
